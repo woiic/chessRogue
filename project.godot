@@ -14,3 +14,7 @@ config/name="RogueChess"
 run/main_scene="uid://dx87u2v57gfvc"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Behaviour="*res://Scripts/behaviour.gd"

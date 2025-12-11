@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4pwaw4godgid"]
+
+[ext_resource type="PackedScene" uid="uid://c0n5k3688cno1" path="res://Scenes/piece.tscn" id="1_b8h17"]
+[ext_resource type="Texture2D" uid="uid://8kw45w8kkr2e" path="res://Sprites/Pawn.png" id="2_lfdvw"]
+
+[node name="Piece" instance=ExtResource("1_b8h17")]
+
+[node name="PieceSprite" parent="." index="1"]
+texture = ExtResource("2_lfdvw")

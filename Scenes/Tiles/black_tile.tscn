@@ -1,11 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://l21r7xgm6pmr"]
 
-[ext_resource type="Script" uid="uid://c86rqdaproums" path="res://Scripts/tile.gd" id="1_ry580"]
+[ext_resource type="PackedScene" uid="uid://bcf8rvvdkf3y5" path="res://Scenes/tile.tscn" id="1_ry580"]
 [ext_resource type="Texture2D" uid="uid://dkyyv6ry1ikv8" path="res://Sprites/BlackTile.png" id="2_xkk11"]
 
-[node name="BlackTile" type="Node2D"]
-script = ExtResource("1_ry580")
-texture = ExtResource("2_xkk11")
-metadata/_custom_type_script = "uid://c86rqdaproums"
+[node name="Tile" instance=ExtResource("1_ry580")]
 
-[node name="TileSprite" type="Sprite2D" parent="."]
+[node name="TileSprite" parent="." index="0"]
+texture = ExtResource("2_xkk11")
