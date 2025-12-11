@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://dx87u2v57gfvc"]
+
+[ext_resource type="Script" uid="uid://ckwokcvvqen7e" path="res://Scripts/board.gd" id="1_tnbny"]
+[ext_resource type="PackedScene" uid="uid://l21r7xgm6pmr" path="res://Scenes/Tiles/black_tile.tscn" id="2_uh3b8"]
+[ext_resource type="PackedScene" uid="uid://bcsxtwisk62bs" path="res://Scenes/Tiles/white_tile.tscn" id="3_shhme"]
+
+[node name="Board" type="Node2D"]
+script = ExtResource("1_tnbny")
+size = Vector2i(6, 6)
+tile1 = ExtResource("2_uh3b8")
+tile2 = ExtResource("3_shhme")
+
+[node name="Camera2D" type="Camera2D" parent="."]

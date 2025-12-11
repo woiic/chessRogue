@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bcsxtwisk62bs"]
+
+[ext_resource type="Script" uid="uid://c86rqdaproums" path="res://Scripts/tile.gd" id="1_l1n6p"]
+[ext_resource type="Texture2D" uid="uid://lxxmeablp2t6" path="res://Sprites/WhiteTile.png" id="2_erkyv"]
+
+[node name="WhiteTile" type="Node2D"]
+script = ExtResource("1_l1n6p")
+texture = ExtResource("2_erkyv")
+metadata/_custom_type_script = "uid://c86rqdaproums"
+
+[node name="TileSprite" type="Sprite2D" parent="."]
