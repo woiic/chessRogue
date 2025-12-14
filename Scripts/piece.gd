@@ -8,8 +8,9 @@ enum Teams{
 	}
 
 var team: Teams = Teams.WHITE
+@export var pieceType: Behaviour.PieceType = Behaviour.PieceType.PAWN
+
 var moves: Array[Vector2i] = []
-var pieceType: Behaviour.PieceType = Behaviour.PieceType.PAWN
 var bHasMoved: bool = false
 var boardPos: Vector2i = Vector2i()
 

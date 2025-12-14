@@ -7,7 +7,10 @@ extends Node2D
 @export var size: Vector2i = Vector2i()
 @export var tile1: Variant
 @export var tile2: Variant
+
 const PAWN = preload("uid://c4pwaw4godgid")
+const KING = preload("uid://c8v1jxyhwqiq")
+
 
 var boardTiles: Array[Array] = []
 var boardPieces: Array[Array] = []
@@ -47,7 +50,7 @@ func generatePieces():
 		boardPieces.append(newArr)
 	var piece
 	piece = PAWN.instantiate()
-	piece.pieceType = Behaviour.PieceType.ROOK
+	piece.pieceType = Behaviour.PieceType.BISHOP
 	piece.team = Piece.Teams.WHITE
 	piece.position = Vector2(2*32, 3*32)
 	piece.boardPos = Vector2i(2,3)
@@ -55,8 +58,9 @@ func generatePieces():
 	add_child(piece)
 	
 	var piece2
-	piece2 = PAWN.instantiate()
-	piece2.pieceType = Behaviour.PieceType.ROOK
+	piece2 = KING.instantiate()
+	#piece2.pieceType = Behaviour.PieceType.ROOK
+	piece2.pieceType = Behaviour.PieceType.KING
 	piece2.team = Piece.Teams.WHITE
 	piece2.position = Vector2(2*32, 5*32)
 	piece2.boardPos = Vector2i(2,5)
@@ -65,6 +69,7 @@ func generatePieces():
 	#boardTiles[2][5].setPieces(piece2) # add child to tile
 	
 	var moves = Behaviour.getPosibleMoves(piece,self)
+	#var moves = Behaviour.getPosibleMoves(piece2,self)
 	print(moves)
 	return
 
@@ -72,10 +77,13 @@ func verifyMove(inPiece: Piece, move: Vector2i) -> Behaviour.MoveResult:
 	var pieceTeam = inPiece.team
 	# out of bounds
 	if size.x <= move.x or size.y <= move.y or move.x < 0 or move.y < 0:
+		#print("stop")
 		return Behaviour.MoveResult.STOP
 	var otherPiece = boardPieces[move.x][move.y]
 	if !otherPiece: # null
+		#print("move")
 		return Behaviour.MoveResult.MOVE
 	if otherPiece.team != pieceTeam:
+		#print("capture")
 		return Behaviour.MoveResult.CAPTURE
 	return Behaviour.MoveResult.STOP
