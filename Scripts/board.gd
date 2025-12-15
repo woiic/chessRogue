@@ -1,7 +1,6 @@
 extends Node2D
 class_name Board
 
-#const TILE = preload("uid://bcf8rvvdkf3y5") # "res://Scenes/tile.tscn"
 @onready var camera_2d: Camera2D = $Camera2D
 
 @export var size: Vector2i = Vector2i()
@@ -11,19 +10,22 @@ class_name Board
 const PAWN = preload("uid://c4pwaw4godgid")
 const KING = preload("uid://c8v1jxyhwqiq")
 const KNIGHT = preload("uid://b1k0coyphnp77")
+const ROOK = preload("uid://bo8ql20fas4xo")
+const QUEEN = preload("uid://dvmmwtisqy5de")
+const BISHOP = preload("uid://b0s78cny2bgin")
 
 # add more when preloading the rest
 const pieceObjectMap = {
 	Behaviour.PieceType.PAWN: PAWN,
 	Behaviour.PieceType.KING: KING,
-	Behaviour.PieceType.KNIGHT: KNIGHT
+	Behaviour.PieceType.KNIGHT: KNIGHT,
+	Behaviour.PieceType.QUEEN: QUEEN,
+	Behaviour.PieceType.ROOK: ROOK,
+	Behaviour.PieceType.BISHOP: BISHOP
 }
 
 var boardTiles: Array[Array] = []
 var boardPieces: Array[Array] = []
-
-func _init() -> void:
-	return
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -56,8 +58,8 @@ func generatePieces():
 		newArr.fill(null)
 		boardPieces.append(newArr)
 	var piece = instanciatePiece(Behaviour.PieceType.KNIGHT, Piece.Teams.WHITE, Vector2i(2, 3))
-	var piece2 = instanciatePiece(Behaviour.PieceType.KING, Piece.Teams.WHITE, Vector2i(0, 2))
-	var piece3 = instanciatePiece(Behaviour.PieceType.PAWN, Piece.Teams.BLACK, Vector2i(3, 2))
+	var _piece2 = instanciatePiece(Behaviour.PieceType.KING, Piece.Teams.WHITE, Vector2i(0, 2))
+	var _piece3 = instanciatePiece(Behaviour.PieceType.PAWN, Piece.Teams.BLACK, Vector2i(3, 2))
 	var moves = Behaviour.getPosibleMoves(piece,self)
 	print(moves)
 	return
