@@ -1,5 +1,5 @@
 extends Node2D
-
+class_name Board
 
 #const TILE = preload("uid://bcf8rvvdkf3y5") # "res://Scenes/tile.tscn"
 @onready var camera_2d: Camera2D = $Camera2D
@@ -10,7 +10,14 @@ extends Node2D
 
 const PAWN = preload("uid://c4pwaw4godgid")
 const KING = preload("uid://c8v1jxyhwqiq")
+const KNIGHT = preload("uid://b1k0coyphnp77")
 
+# add more when preloading the rest
+const pieceObjectMap = {
+	Behaviour.PieceType.PAWN: PAWN,
+	Behaviour.PieceType.KING: KING,
+	Behaviour.PieceType.KNIGHT: KNIGHT
+}
 
 var boardTiles: Array[Array] = []
 var boardPieces: Array[Array] = []
@@ -48,28 +55,10 @@ func generatePieces():
 		newArr.resize(size.y)
 		newArr.fill(null)
 		boardPieces.append(newArr)
-	var piece
-	piece = PAWN.instantiate()
-	piece.pieceType = Behaviour.PieceType.BISHOP
-	piece.team = Piece.Teams.WHITE
-	piece.position = Vector2(2*32, 3*32)
-	piece.boardPos = Vector2i(2,3)
-	boardPieces[2][3] = piece
-	add_child(piece)
-	
-	var piece2
-	piece2 = KING.instantiate()
-	#piece2.pieceType = Behaviour.PieceType.ROOK
-	piece2.pieceType = Behaviour.PieceType.KING
-	piece2.team = Piece.Teams.WHITE
-	piece2.position = Vector2(2*32, 5*32)
-	piece2.boardPos = Vector2i(2,5)
-	boardPieces[2][5] = piece2
-	add_child(piece2)
-	#boardTiles[2][5].setPieces(piece2) # add child to tile
-	
+	var piece = instanciatePiece(Behaviour.PieceType.KNIGHT, Piece.Teams.WHITE, Vector2i(2, 3))
+	var piece2 = instanciatePiece(Behaviour.PieceType.KING, Piece.Teams.WHITE, Vector2i(0, 2))
+	var piece3 = instanciatePiece(Behaviour.PieceType.PAWN, Piece.Teams.BLACK, Vector2i(3, 2))
 	var moves = Behaviour.getPosibleMoves(piece,self)
-	#var moves = Behaviour.getPosibleMoves(piece2,self)
 	print(moves)
 	return
 
@@ -87,3 +76,13 @@ func verifyMove(inPiece: Piece, move: Vector2i) -> Behaviour.MoveResult:
 		#print("capture")
 		return Behaviour.MoveResult.CAPTURE
 	return Behaviour.MoveResult.STOP
+
+func instanciatePiece(pieceType: Behaviour.PieceType, team: Piece.Teams, startingPosition: Vector2i) -> Piece:
+	var pieceObject = pieceObjectMap[pieceType]
+	var piece = pieceObject.instantiate()
+	piece.team = team
+	piece.position = startingPosition * 32
+	piece.boardPos = startingPosition
+	boardPieces[startingPosition.x][startingPosition.y] = piece
+	add_child(piece)
+	return piece

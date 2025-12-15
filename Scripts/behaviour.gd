@@ -5,17 +5,26 @@ enum MoveResult{STOP=0, MOVE=1, CAPTURE=2}
 
 enum PieceType{PAWN=0, ROOK, KNIGHT, BISHOP, QUEEN, KING}
 
-func getPosibleMoves(inPiece, boardRef):
-	var movesArr = []
+func getPosibleMoves(inPiece: Piece, boardRef: Board):
+	var movesArr: Array[Vector2i] = []
 	match inPiece.pieceType:
 		PieceType.PAWN:
-			#if !inPiece.bHasMoved:
-			#	movesArr.append(inPiece.boardPos + Vector2i(0, 2*inPiece.type))
-			#movesArr.append(inPiece.boardPos + Vector2i(0, 1*inPiece.type))
-			#capturesArr.append(inPiece.boardPos + Vector2i(1, 1*inPiece.type))
-			#capturesArr.append(inPiece.boardPos + Vector2i(-1, 1*inPiece.type))
-			#boardRef.verifyMoves()
-			return
+			# get the forward direction in the board depending on your side
+			var forward: Vector2i = Vector2i(0, 1) if inPiece.team == Piece.Teams.BLACK else Vector2i(0, -1)
+			# Simplest move, 1 block forward (not counting capture)
+			if boardRef.verifyMove(inPiece, inPiece.boardPos + forward) == MoveResult.MOVE:
+				movesArr.append(inPiece.boardPos + forward)
+				# In the starting case where the piece hasn't moved you can move twice in the
+				# forward direction (again not counting capture)
+				if not inPiece.bHasMoved and boardRef.verifyMove(inPiece, inPiece.boardPos + 2*forward) == MoveResult.MOVE:
+					movesArr.append(inPiece.boardPos + 2*forward)
+			# capture in forward diagonal in both directions
+			if boardRef.verifyMove(inPiece, inPiece.boardPos + forward + Vector2i(1, 0)) == MoveResult.CAPTURE:
+				movesArr.append(inPiece.boardPos + forward + Vector2i(1, 0))
+			if boardRef.verifyMove(inPiece, inPiece.boardPos + forward + Vector2i(-1, 0)) == MoveResult.CAPTURE:
+				movesArr.append(inPiece.boardPos + forward + Vector2i(-1, 0))
+			return movesArr
+
 		PieceType.ROOK:
 			for x in range(1, boardRef.size.x):
 				var move = inPiece.boardPos + Vector2i(1*x , 0)
@@ -58,10 +67,23 @@ func getPosibleMoves(inPiece, boardRef):
 					MoveResult.CAPTURE:
 						movesArr.append(move)
 						break
+
 		PieceType.KNIGHT:
-			# podrías hacer esta parte con un vector, para q se pueda ajustar
-			# para varias distancias
-			return
+			const possibleMoves: Array[Vector2i] = [
+				Vector2i(2, 1),
+				Vector2i(2, -1),
+				Vector2i(-2, 1),
+				Vector2i(-2, -1),
+				Vector2i(1, 2),
+				Vector2i(1, -2),
+				Vector2i(-1, 2),
+				Vector2i(-1, -2)
+			]
+			for move in possibleMoves:
+				if boardRef.verifyMove(inPiece, inPiece.boardPos + move) != MoveResult.STOP:
+					movesArr.append(inPiece.boardPos + move)
+			return movesArr
+
 		PieceType.BISHOP:
 			var minSide = min(boardRef.size.x, boardRef.size.y)
 			for x in range(1, minSide):
@@ -105,6 +127,7 @@ func getPosibleMoves(inPiece, boardRef):
 						movesArr.append(move)
 						break
 			return movesArr
+
 		PieceType.QUEEN:
 			# straight
 			for x in range(1, boardRef.size.x):
@@ -190,6 +213,7 @@ func getPosibleMoves(inPiece, boardRef):
 						movesArr.append(move)
 						break
 			return movesArr
+
 		PieceType.KING:
 			for x in 8:
 				var angulo = x*(PI/4.0)
@@ -207,13 +231,5 @@ func getPosibleMoves(inPiece, boardRef):
 					_:
 						continue
 			return movesArr
+
 	return movesArr
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass

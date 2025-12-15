@@ -1,11 +1,11 @@
 extends Node2D
 class_name Piece
 
-enum Teams{
+enum Teams {
 	BLACK=-1,
 	NONE=0,
 	WHITE=1
-	}
+}
 
 var team: Teams = Teams.WHITE
 @export var pieceType: Behaviour.PieceType = Behaviour.PieceType.PAWN
