@@ -5,7 +5,7 @@ enum MoveResult{STOP=0, MOVE=1, CAPTURE=2}
 
 enum PieceType{PAWN=0, ROOK, KNIGHT, BISHOP, QUEEN, KING}
 
-func getPosibleMoves(inPiece: Piece, boardRef: Board):
+func getPosibleMoves(inPiece: Piece, boardRef: Board) -> Array[Vector2i]:
 	var movesArr: Array[Vector2i] = []
 	match inPiece.pieceType:
 		PieceType.PAWN:

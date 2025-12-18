@@ -58,7 +58,7 @@ func generatePieces():
 		newArr.fill(null)
 		boardPieces.append(newArr)
 	var piece = instanciatePiece(Behaviour.PieceType.KNIGHT, Piece.Teams.WHITE, Vector2i(2, 3))
-	var _piece2 = instanciatePiece(Behaviour.PieceType.KING, Piece.Teams.WHITE, Vector2i(0, 2))
+	var _piece2 = instanciatePiece(Behaviour.PieceType.KING, Piece.Teams.WHITE, Vector2i(0, 0))
 	var _piece3 = instanciatePiece(Behaviour.PieceType.PAWN, Piece.Teams.BLACK, Vector2i(3, 2))
 	var moves = Behaviour.getPosibleMoves(piece,self)
 	print(moves)
@@ -83,8 +83,22 @@ func instanciatePiece(pieceType: Behaviour.PieceType, team: Piece.Teams, startin
 	var pieceObject = pieceObjectMap[pieceType]
 	var piece = pieceObject.instantiate()
 	piece.team = team
-	piece.position = startingPosition * 32
-	piece.boardPos = startingPosition
+	piece.setPosition(startingPosition)
 	boardPieces[startingPosition.x][startingPosition.y] = piece
 	add_child(piece)
+	piece.boardRef = self
 	return piece
+
+func movePiece(piece: Piece, targetPosition: Vector2i) -> void:
+	if targetPosition in Behaviour.getPosibleMoves(piece,self):
+		var oldPosition = piece.boardPos
+		boardPieces[oldPosition.x][oldPosition.y] = null
+		var oldPiece = boardPieces[targetPosition.x][targetPosition.y]
+		if oldPiece != null:
+			# call a destroy or something
+			handleDestroy(oldPiece)
+		boardPieces[targetPosition.x][targetPosition.y] = piece
+		piece.setPosition(targetPosition)
+		
+func handleDestroy(piece: Piece) -> void:
+	piece.queue_free()
